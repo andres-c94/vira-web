@@ -8,6 +8,5 @@ declare global {
 
 export const environment = {
   production: true,
-  apiUrl: window.__VIRA_CONFIG__?.apiUrl || 'http://192.168.1.9:3000'
-
+  apiUrl: window.__VIRA_CONFIG__?.apiUrl || 'https://vira-api-n85f.onrender.com'
 };

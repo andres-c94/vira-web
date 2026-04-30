@@ -14,16 +14,19 @@ La app genera `public/runtime-config.js` antes de `start` y `build`.
 Variables soportadas:
 
 ```bash
-NG_APP_API_URL=https://tu-api.com
+NG_APP_API_URL=https://vira-api-n85f.onrender.com
 ```
 
 o
 
 ```bash
-VIRA_API_URL=https://tu-api.com
+VIRA_API_URL=https://vira-api-n85f.onrender.com
 ```
 
-Si no se define, usa `http://localhost:3000`.
+Si no se define:
+
+- en desarrollo local usa el fallback del `environment.ts`
+- en producción usa `https://vira-api-n85f.onrender.com`
 
 ## Development server
 
@@ -54,7 +57,7 @@ ng generate --help
 To build the project run:
 
 ```bash
-NG_APP_API_URL=https://tu-api.com npm run build
+NG_APP_API_URL=https://vira-api-n85f.onrender.com npm run build
 ```
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
@@ -70,7 +73,7 @@ El proyecto ya incluye `vercel.json` con:
 En Vercel configura:
 
 ```bash
-NG_APP_API_URL=https://tu-api.com
+NG_APP_API_URL=https://vira-api-n85f.onrender.com
 ```
 
 ## GitHub
