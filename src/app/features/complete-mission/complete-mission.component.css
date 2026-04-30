@@ -1,0 +1,109 @@
+.form-card {
+  display: grid;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 22px;
+  background: rgba(17, 24, 39, 0.85);
+  border: 1px solid rgba(55, 65, 81, 0.55);
+}
+
+.form-intro,
+label {
+  margin: 0;
+}
+
+.form-intro {
+  color: rgba(156, 163, 175, 0.82);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+label {
+  display: grid;
+  gap: 0.45rem;
+  color: var(--text-secondary);
+}
+
+.form-field select {
+  min-height: 52px;
+}
+
+.completion-sequence {
+  display: grid;
+  gap: 1rem;
+  padding: 2rem 1.5rem;
+  border-radius: 22px;
+  background: rgba(17, 24, 39, 0.72);
+  border: 1px solid rgba(55, 65, 81, 0.4);
+}
+
+.completion-sequence__status,
+.completion-sequence__xp,
+.completion-sequence__progress p,
+.completion-sequence__streak {
+  margin: 0;
+}
+
+.completion-sequence__status {
+  display: grid;
+  justify-items: start;
+  gap: 0.6rem;
+}
+
+.completion-sequence__status span {
+  display: inline-grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 999px;
+  background: rgba(34, 197, 94, 0.14);
+  color: var(--success);
+  font-size: 1.2rem;
+}
+
+.completion-sequence__status h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.completion-sequence__xp {
+  color: rgba(245, 158, 11, 0.96);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.completion-sequence__progress {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.completion-sequence__progress p {
+  color: rgba(249, 250, 251, 0.72);
+  font-size: 0.88rem;
+}
+
+.completion-sequence__track {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.completion-sequence__track span {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.96), rgba(234, 179, 8, 0.82));
+  transition: width 560ms ease-out;
+}
+
+.completion-sequence__track span.is-active {
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.18);
+}
+
+.completion-sequence__streak {
+  color: rgba(249, 250, 251, 0.88);
+  font-size: 0.96rem;
+}

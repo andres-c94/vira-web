@@ -1,0 +1,45 @@
+<div class="suggestion-modal__backdrop" *ngIf="suggestionsService.modalOpen()" (click)="close()">
+  <section class="suggestion-modal" (click)="$event.stopPropagation()">
+    <header class="suggestion-modal__header">
+      <div>
+        <h2>Enviar sugerencia</h2>
+        <p>Cuéntanos qué mejorarías, qué falta o qué se siente raro.</p>
+      </div>
+      <button type="button" class="suggestion-modal__close" (click)="close()" aria-label="Cerrar">
+        ×
+      </button>
+    </header>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="suggestion-modal__form">
+      <label>
+        Tipo
+        <select formControlName="type">
+          <option value="IDEA">Idea</option>
+          <option value="PROBLEM">Problema</option>
+          <option value="IMPROVEMENT">Mejora</option>
+          <option value="OTHER">Otro</option>
+        </select>
+      </label>
+
+      <label>
+        Mensaje
+        <textarea formControlName="message" rows="5" placeholder="Escribe tu sugerencia..."></textarea>
+      </label>
+
+      <label>
+        Correo opcional
+        <input type="email" formControlName="email" placeholder="tu@correo.com" />
+      </label>
+
+      <p class="suggestion-modal__error" *ngIf="errorMessage()">{{ errorMessage() }}</p>
+      <p class="suggestion-modal__success" *ngIf="successMessage()">{{ successMessage() }}</p>
+
+      <div class="suggestion-modal__actions">
+        <button type="button" class="suggestion-modal__secondary" (click)="close()">Cancelar</button>
+        <button type="submit" class="suggestion-modal__primary" [disabled]="loading()">
+          {{ loading() ? 'Enviando...' : 'Enviar sugerencia' }}
+        </button>
+      </div>
+    </form>
+  </section>
+</div>

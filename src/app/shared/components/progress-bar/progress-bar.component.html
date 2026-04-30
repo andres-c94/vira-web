@@ -1,0 +1,7 @@
+<div class="progress-row">
+  <span>{{ label() }}</span>
+  <span>{{ clampedValue() }}%</span>
+</div>
+<div class="progress-track" aria-hidden="true">
+  <div class="progress-fill" [style.width.%]="clampedValue()"></div>
+</div>

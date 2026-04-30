@@ -1,0 +1,7 @@
+<section class="empty-state">
+  <h2>{{ title() }}</h2>
+  <p>{{ description() }}</p>
+  <app-button *ngIf="actionLabel()" variant="secondary" (click)="action.emit()">
+    {{ actionLabel() }}
+  </app-button>
+</section>

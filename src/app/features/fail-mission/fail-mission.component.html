@@ -1,0 +1,24 @@
+<app-page-shell [compact]="true">
+  <app-page-header title="No la hice" subtitle="Registra el cierre del día sin editar el pasado."></app-page-header>
+
+  <form class="form-card" [formGroup]="form" (ngSubmit)="submit()">
+    <app-error-message [message]="errorMessage()"></app-error-message>
+
+    <label>
+      Razón
+      <select formControlName="reason">
+        <option *ngFor="let reason of reasons" [value]="reason">{{ reason }}</option>
+      </select>
+    </label>
+
+    <label>
+      Estado emocional
+      <select formControlName="mood">
+        <option value="">Sin registrar</option>
+        <option *ngFor="let mood of moods.slice(1)" [value]="mood">{{ mood }}</option>
+      </select>
+    </label>
+
+    <app-button type="submit" variant="danger" [loading]="loading()">Cerrar día</app-button>
+  </form>
+</app-page-shell>

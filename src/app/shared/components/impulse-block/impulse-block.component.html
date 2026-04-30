@@ -1,0 +1,67 @@
+<section class="impulse-block" *ngIf="!loading() && response() as data">
+  <div class="impulse-block__header">
+    <p>MODO IMPULSO</p>
+    <h3>Acciones rapidas por bloques.</h3>
+  </div>
+
+  <div class="impulse-block__topline">
+    <span class="impulse-block__status-pill">{{ statusPill() }}</span>
+    <span class="impulse-block__range" *ngIf="currentBlock() as block">{{ block.startTime }}-{{ block.endTime }}</span>
+  </div>
+
+  <div class="impulse-block__status" [class.is-countdown]="status() !== 'ACTIVE_BLOCK'">
+    <p>{{ countdownLabel() }}</p>
+    <span *ngIf="status() === 'BLOCK_COMPLETED' && data.nextBlock">
+      Sigue: Impulso {{ data.nextBlock.blockIndex }}/4 · {{ data.nextBlock.startTime }}-{{ data.nextBlock.endTime }}
+    </span>
+  </div>
+
+  <div
+    *ngIf="canShowTasks()"
+    class="impulse-block__chips-wrap"
+    [class.is-cooldown]="cooldownActive()"
+  >
+    <div class="impulse-block__chips" [@chipList]="actions().length">
+      <button
+        *ngFor="let action of actions(); trackBy: trackByActionId; let index = index"
+        type="button"
+        class="impulse-chip"
+        [ngClass]="bubbleVariant(action, index)"
+        [class.is-done]="action.status === 'COMPLETED'"
+        [class.is-completing]="completingActionId() === action.id"
+        [class.is-disabled]="action.status === 'COMPLETED' || status() !== 'ACTIVE_BLOCK'"
+        [class.is-cooldown-disabled]="cooldownActive()"
+        [@chipState]="chipState(action)"
+        (@chipState.done)="onAnimationDone($event, action)"
+        (click)="onActionClick(action)"
+        [disabled]="action.status === 'COMPLETED' || status() !== 'ACTIVE_BLOCK'"
+      >
+        <span class="impulse-chip__spark" aria-hidden="true"></span>
+        <span class="impulse-chip__text">{{ action.taskText }}</span>
+        <span class="impulse-chip__meta" *ngIf="action.status !== 'COMPLETED'">
+          +{{ previewXp(action) }} XP
+        </span>
+        <span class="impulse-chip__meta impulse-chip__meta--done" *ngIf="action.status === 'COMPLETED'">hecho</span>
+        <span
+          class="impulse-chip__xp-pop"
+          *ngIf="action.status === 'COMPLETED' && action.xpEarned > 0"
+          [@xpPop]="chipState(action)"
+          (@xpPop.start)="onXpPopStart()"
+        >
+          +{{ action.xpEarned }} XP
+        </span>
+      </button>
+    </div>
+
+    <p
+      *ngIf="blockedFeedbackVisible()"
+      class="impulse-block__blocked-cue"
+      [@blockedCue]="blockedFeedbackTick()"
+      (@blockedCue.done)="onBlockedFeedbackDone()"
+    >
+      Espera un momento
+    </p>
+  </div>
+
+  <p class="impulse-block__count" *ngIf="completedCountLabel()">{{ completedCountLabel() }}</p>
+</section>

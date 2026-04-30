@@ -1,0 +1,20 @@
+<section class="install-banner" *ngIf="visible()">
+  <div class="install-banner__copy">
+    <p>{{ copy().title }}</p>
+    <span>{{ copy().text }}</span>
+  </div>
+
+  <div class="install-banner__ios-steps" *ngIf="iosStepsVisible()">
+    <p>1. Toca el botón Compartir de Safari.</p>
+    <p>2. Elige “Agregar a pantalla de inicio”.</p>
+  </div>
+
+  <p class="install-banner__error" *ngIf="errorMessage()">{{ errorMessage() }}</p>
+
+  <div class="install-banner__actions">
+    <button type="button" class="install-banner__secondary" (click)="dismiss()">{{ copy().secondaryLabel }}</button>
+    <button type="button" class="install-banner__primary" (click)="install()" [disabled]="loading()">
+      {{ loading() ? 'Abriendo...' : copy().primaryLabel }}
+    </button>
+  </div>
+</section>

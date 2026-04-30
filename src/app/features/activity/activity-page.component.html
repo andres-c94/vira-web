@@ -1,0 +1,136 @@
+<app-page-shell [compact]="true">
+  <app-page-header
+    title="Actividad global"
+    subtitle="No estás solo. Otros también están intentando no romper la racha."
+  ></app-page-header>
+
+  <app-error-message [message]="errorMessage()"></app-error-message>
+  <app-loading-state *ngIf="loading()"></app-loading-state>
+
+  <ng-container *ngIf="!loading()">
+    <section class="activity-panel" *ngIf="!isEnabled(); else enabledView">
+      <div class="intro-block">
+        <h2>Actividad global</h2>
+        <p>Compite con otros usuarios sin mostrar tu correo ni datos privados.</p>
+      </div>
+
+      <form class="activity-form" [formGroup]="form" (ngSubmit)="saveProfile()">
+        <label>
+          Nombre visible
+          <input type="text" formControlName="displayName" maxlength="30" placeholder="Andres" />
+        </label>
+
+        <label class="toggle-line">
+          <input type="checkbox" formControlName="globalLeaderboardOptIn" />
+          Participar en actividad global
+        </label>
+
+        <app-button type="submit" [loading]="saving()" [disabled]="form.invalid || !form.get('globalLeaderboardOptIn')?.value">
+          Activar actividad global
+        </app-button>
+
+        <p class="helper">Puedes desactivarlo cuando quieras.</p>
+        <p class="success" *ngIf="saveMessage()">{{ saveMessage() }}</p>
+      </form>
+    </section>
+
+    <ng-template #enabledView>
+      <section class="activity-layout" *ngIf="leaderboard() as data; else noData">
+        <section class="activity-panel zone-panel">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Tu zona</p>
+              <h2>Cerca de ti</h2>
+            </div>
+            <span class="zone-hint">{{ zoneMessage() }}</span>
+          </div>
+
+          <div class="zone-list" *ngIf="data.zone?.length; else emptyZone">
+            <article
+              class="rank-row"
+              *ngFor="let entry of data.zone; trackBy: trackByPosition"
+              [class.is-current]="entry.isCurrentUser"
+            >
+              <span class="rank-position">#{{ entry.position }}</span>
+              <div class="rank-copy">
+                <strong>{{ entry.isCurrentUser ? 'Tú' : entry.displayName }}</strong>
+                <span class="status-chip" [ngClass]="statusClass(entry.todayStatus)">{{ statusLabel(entry.todayStatus) }}</span>
+              </div>
+              <div class="rank-metric">
+                <strong>Racha {{ entry.currentStreak }}</strong>
+                <span>{{ entry.impulseBlocksCompletedToday }} bloques hoy · {{ entry.impulseActionsCompletedToday }} acciones impulso</span>
+                <em>+{{ entry.impulseTodayXp }} impulso · {{ entry.completedDaysCount }} acciones reales</em>
+              </div>
+            </article>
+          </div>
+
+          <ng-template #emptyZone>
+            <app-empty-state
+              title="Aún no entras al ranking"
+              description="Empieza un programa y vuelve aquí cuando tengas actividad registrada."
+            ></app-empty-state>
+          </ng-template>
+        </section>
+
+        <section class="activity-panel top-panel">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Top disciplina</p>
+              <h2>Top global</h2>
+            </div>
+          </div>
+
+          <div class="top-list" *ngIf="data.top?.length">
+            <article class="top-row" *ngFor="let entry of data.top; trackBy: trackByPosition">
+              <span>#{{ entry.position }}</span>
+              <strong>{{ entry.displayName }}</strong>
+              <span>Racha {{ entry.currentStreak }}</span>
+              <em>{{ entry.impulseBlocksCompletedToday }} bloques hoy</em>
+            </article>
+          </div>
+        </section>
+
+        <section class="activity-panel summary-panel" *ngIf="data.summary">
+          <p>Hoy completaron {{ data.summary.completedTodayCount }} personas.</p>
+          <p>Y siguen {{ data.summary.pendingTodayCount }} pendientes.</p>
+          <p>{{ data.summary.impulseActiveTodayCount }} ya activaron impulso.</p>
+        </section>
+
+        <section class="activity-panel settings-panel">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Visibilidad</p>
+              <h2>Tu perfil público</h2>
+            </div>
+          </div>
+
+          <form class="activity-form" [formGroup]="form" (ngSubmit)="saveProfile()">
+            <label>
+              Nombre visible
+              <input type="text" formControlName="displayName" maxlength="30" placeholder="Aventurero #1234" />
+            </label>
+
+            <label class="toggle-line">
+              <input type="checkbox" formControlName="globalLeaderboardOptIn" />
+              Participar en actividad global
+            </label>
+
+            <app-button type="submit" [loading]="saving()" [disabled]="form.invalid || form.pristine">
+              Guardar actividad global
+            </app-button>
+
+            <p class="helper">Participas como {{ profile()?.publicAlias }}</p>
+            <p class="success" *ngIf="saveMessage()">{{ saveMessage() }}</p>
+          </form>
+        </section>
+      </section>
+    </ng-template>
+
+    <ng-template #noData>
+      <app-empty-state
+        title="Sin datos disponibles"
+        description="Activa la actividad global y vuelve a consultar tu zona."
+      ></app-empty-state>
+    </ng-template>
+  </ng-container>
+</app-page-shell>

@@ -1,0 +1,133 @@
+.suggestion-modal__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(3, 7, 18, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.suggestion-modal {
+  width: min(100%, 560px);
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(55, 65, 81, 0.45);
+  border-radius: 20px;
+  background: rgba(17, 24, 39, 0.98);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.36);
+}
+
+.suggestion-modal__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.suggestion-modal__header h2,
+.suggestion-modal__header p,
+.suggestion-modal__error,
+.suggestion-modal__success {
+  margin: 0;
+}
+
+.suggestion-modal__header h2 {
+  color: var(--text-primary);
+  font-size: 1.05rem;
+}
+
+.suggestion-modal__header p {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.4;
+  margin-top: 0.25rem;
+}
+
+.suggestion-modal__close {
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid rgba(55, 65, 81, 0.5);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.suggestion-modal__form {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.suggestion-modal__form label {
+  display: grid;
+  gap: 0.4rem;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+}
+
+.suggestion-modal__form input,
+.suggestion-modal__form select,
+.suggestion-modal__form textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid rgba(55, 65, 81, 0.7);
+  border-radius: 14px;
+  background: rgba(31, 41, 55, 0.9);
+  color: var(--text-primary);
+  font: inherit;
+}
+
+.suggestion-modal__form textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+.suggestion-modal__actions {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.suggestion-modal__primary,
+.suggestion-modal__secondary {
+  min-height: 48px;
+  border-radius: 14px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.suggestion-modal__primary {
+  border: 0;
+  background: #f59e0b;
+  color: #111827;
+  font-weight: 700;
+}
+
+.suggestion-modal__secondary {
+  border: 1px solid rgba(55, 65, 81, 0.7);
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.suggestion-modal__error {
+  color: #fca5a5;
+  font-size: 0.82rem;
+}
+
+.suggestion-modal__success {
+  color: #86efac;
+  font-size: 0.82rem;
+}
+
+@media (min-width: 640px) {
+  .suggestion-modal {
+    padding: 1.25rem;
+  }
+
+  .suggestion-modal__actions {
+    grid-template-columns: 1fr 1fr;
+  }
+}

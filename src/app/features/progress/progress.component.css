@@ -1,0 +1,101 @@
+.progress-screen {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0.5rem 0 1rem;
+}
+
+.hero-progress,
+.streak-focus {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.hero-progress p,
+.hero-progress span,
+.hero-progress small,
+.streak-focus h1,
+.streak-focus p,
+.inline-stats,
+.reinforcement {
+  margin: 0;
+}
+
+.hero-progress p {
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.hero-progress span,
+.hero-progress small,
+.inline-stats,
+.reinforcement,
+.streak-focus p {
+  color: rgba(156, 163, 175, 0.82);
+}
+
+.progress-track {
+  height: 18px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(31, 41, 55, 0.72);
+}
+
+.progress-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--warning));
+  transition: width 520ms ease-out;
+}
+
+.streak-focus {
+  padding-top: 0.75rem;
+}
+
+.streak-focus h1 {
+  font-size: 3.1rem;
+  line-height: 0.95;
+}
+
+.inline-stats {
+  font-size: 0.95rem;
+}
+
+.reinforcement {
+  max-width: 28rem;
+  font-size: 0.98rem;
+}
+
+.progress-cta {
+  width: 100%;
+  min-height: 52px;
+  margin-top: auto;
+  border: 0;
+  border-radius: 14px;
+  background: var(--accent);
+  color: #101418;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .progress-screen {
+    min-height: calc(100vh - 140px);
+    gap: 2rem;
+  }
+
+  .hero-progress p {
+    font-size: 3.2rem;
+  }
+
+  .streak-focus h1 {
+    font-size: 4rem;
+  }
+}

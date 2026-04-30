@@ -1,0 +1,20 @@
+<app-page-shell [compact]="true">
+  <app-page-header title="Iniciar sesión" subtitle="Entra para ver tu misión diaria."></app-page-header>
+
+  <form class="form-card" [formGroup]="form" (ngSubmit)="submit()">
+    <app-error-message [message]="errorMessage()"></app-error-message>
+
+    <label>
+      Email
+      <input type="email" formControlName="email" />
+    </label>
+
+    <label>
+      Password
+      <input type="password" formControlName="password" />
+    </label>
+
+    <app-button type="submit" [loading]="loading()">Entrar</app-button>
+    <a routerLink="/register" class="inline-link">Crear cuenta</a>
+  </form>
+</app-page-shell>

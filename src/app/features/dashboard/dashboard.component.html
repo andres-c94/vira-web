@@ -1,0 +1,82 @@
+<app-page-shell>
+  <app-error-message [message]="errorMessage()"></app-error-message>
+  <app-loading-state *ngIf="loading()"></app-loading-state>
+
+  <ng-container *ngIf="!loading() && dashboard() as data">
+    <app-empty-state
+      *ngIf="!data.program"
+      title="No tienes un programa activo."
+      description="Elige un programa para comenzar tu primera misión."
+      actionLabel="Elegir programa"
+      (action)="goToPrograms()"
+    ></app-empty-state>
+
+    <main *ngIf="data.program" class="main-screen">
+      <header class="screen-header">
+        <span *ngIf="data.programStatus !== 'COMPLETED'">Día {{ data.programDay ?? 1 }} de {{ data.program.totalDays }}</span>
+        <span *ngIf="data.programStatus === 'COMPLETED'">Reto terminado</span>
+      </header>
+
+      <section class="mission-block" [@missionState]="data.missionExecutionStatus ?? data.programStatus ?? 'PENDING'">
+        <h1 *ngIf="data.mission">{{ data.mission.title }}</h1>
+        <h1 *ngIf="data.programStatus === 'COMPLETED'">Reset Dopamina completado.</h1>
+
+        <p class="status-line" *ngIf="data.programStatus === 'ACTIVE' && data.missionExecutionStatus === 'PENDING'">
+          Pendiente
+        </p>
+        <p class="status-line status-line--success" *ngIf="data.programStatus === 'ACTIVE' && data.missionExecutionStatus === 'COMPLETED'">
+          Esto ya cuenta
+        </p>
+        <p class="status-line status-line--closed" *ngIf="data.programStatus === 'ACTIVE' && data.missionExecutionStatus === 'FAILED'">
+          Día cerrado
+        </p>
+        <p class="status-line status-line--success" *ngIf="data.programStatus === 'COMPLETED'">
+          Programa finalizado
+        </p>
+
+        <p class="reward-line" *ngIf="data.mission?.xpReward" @rewardPop>+{{ data.mission!.xpReward }} XP</p>
+      </section>
+
+      <app-install-app-banner
+        *ngIf="data.programStatus === 'ACTIVE' && data.missionExecutionStatus === 'COMPLETED'"
+      ></app-install-app-banner>
+
+      <section class="progress-inline" [@streakPulse]="data.missionExecutionStatus === 'COMPLETED' ? data.currentStreak ?? 0 : 'idle'">
+        <p>Nivel {{ data.level ?? 1 }} · XP {{ data.totalXP ?? 0 }} · Racha {{ data.currentStreak ?? 0 }}</p>
+        <app-progress-bar [value]="data.progressPercent ?? 0" label=""></app-progress-bar>
+        <span class="progress-note">{{ (data.currentStreak ?? 0) > 0 ? 'No la rompas mañana' : 'Empieza hoy' }}</span>
+      </section>
+
+      <app-impulse-block
+        *ngIf="data.programStatus === 'ACTIVE' && data.missionExecutionStatus === 'COMPLETED'"
+      ></app-impulse-block>
+
+      <section *ngIf="data.programStatus === 'ACTIVE' && data.missionExecutionStatus === 'COMPLETED' && nextMission()" class="anticipation-block">
+        <p>MAÑANA</p>
+        <h2>{{ nextMission()!.title }}</h2>
+        <span>Sin adelantos. Solo una pista.</span>
+      </section>
+
+      <section class="bottom-cta">
+        <app-button *ngIf="data.programStatus === 'ACTIVE' && data.missionExecutionStatus === 'PENDING'" (click)="goToCompleteMission()">
+          Completar misión
+        </app-button>
+        <app-button *ngIf="data.programStatus === 'ACTIVE' && data.missionExecutionStatus !== 'PENDING'" (click)="goToProgress()">
+          Ver avance
+        </app-button>
+        <app-button *ngIf="data.programStatus === 'COMPLETED'" (click)="goToProgress()">
+          Ver avance
+        </app-button>
+      </section>
+
+      <button
+        type="button"
+        class="suggestion-link"
+        *ngIf="data.programStatus === 'ACTIVE'"
+        (click)="openSuggestions()"
+      >
+        Enviar sugerencia
+      </button>
+    </main>
+  </ng-container>
+</app-page-shell>

@@ -1,0 +1,14 @@
+<button
+  class="app-button"
+  [class.primary]="variant() === 'primary'"
+  [class.secondary]="variant() === 'secondary'"
+  [class.danger]="variant() === 'danger'"
+  [class.ghost]="variant() === 'ghost'"
+  [disabled]="disabled() || loading()"
+  [type]="type()"
+>
+  <span *ngIf="!loading(); else loadingTpl">
+    <ng-content></ng-content>
+  </span>
+  <ng-template #loadingTpl>Procesando...</ng-template>
+</button>

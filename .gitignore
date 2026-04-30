@@ -1,0 +1,12 @@
+/.angular
+/dist
+/node_modules
+/.vercel
+
+# Local env / machine-specific files
+/public/runtime-config.js
+
+# Editor / tooling
+.DS_Store
+Thumbs.db
+.codex

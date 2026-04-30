@@ -1,0 +1,35 @@
+.stat-card {
+  padding: 1rem;
+  border: 0;
+  border-radius: 16px;
+  background: rgba(31, 41, 55, 0.34);
+}
+
+.label,
+.helper {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.value {
+  margin: 0.35rem 0;
+  font-size: 1.85rem;
+  font-weight: 700;
+}
+
+@media (max-width: 767px) {
+  .stat-card {
+    padding: 0.8rem;
+    border-radius: 16px;
+  }
+
+  .label,
+  .helper {
+    font-size: 0.82rem;
+  }
+
+  .value {
+    margin: 0.25rem 0;
+    font-size: 1.35rem;
+  }
+}

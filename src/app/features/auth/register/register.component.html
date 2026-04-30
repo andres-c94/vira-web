@@ -1,0 +1,25 @@
+<app-page-shell [compact]="true">
+  <app-page-header
+    title="Crear cuenta"
+    subtitle="Usaremos tu zona horaria actual para iniciar el programa."
+  ></app-page-header>
+
+  <form class="form-card" [formGroup]="form" (ngSubmit)="submit()">
+    <app-error-message [message]="errorMessage()"></app-error-message>
+
+    <label>
+      Email
+      <input type="email" formControlName="email" />
+    </label>
+
+    <label>
+      Password
+      <input type="password" formControlName="password" />
+    </label>
+
+    <p class="helper">Zona horaria detectada: {{ timezone }}</p>
+
+    <app-button type="submit" [loading]="loading()">Crear cuenta</app-button>
+    <a routerLink="/login" class="inline-link">Ya tengo cuenta</a>
+  </form>
+</app-page-shell>

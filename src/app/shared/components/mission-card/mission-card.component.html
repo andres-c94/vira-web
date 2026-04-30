@@ -1,0 +1,22 @@
+<article class="mission-card">
+  <div class="mission-card__head">
+    <span class="eyebrow">Día {{ mission().dayNumber }}</span>
+    <span class="status" [class.completed]="status() === 'COMPLETED'" [class.failed]="status() === 'FAILED'">
+      {{ status() }}
+    </span>
+  </div>
+
+  <h2>{{ mission().title }}</h2>
+  <p>{{ mission().description }}</p>
+
+  <div class="meta">
+    <span>Dificultad {{ difficultyLabel(mission().structuralDifficulty) }}</span>
+    <span>{{ mission().xpReward }} XP</span>
+  </div>
+
+  <div class="actions">
+    <app-button variant="secondary" (click)="view.emit()">Ver misión</app-button>
+    <app-button *ngIf="status() === 'PENDING'" (click)="complete.emit()">Completar misión</app-button>
+    <app-button *ngIf="status() === 'PENDING'" variant="danger" (click)="fail.emit()">No la hice</app-button>
+  </div>
+</article>

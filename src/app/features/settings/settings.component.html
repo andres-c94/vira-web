@@ -1,0 +1,76 @@
+<app-page-shell [compact]="true">
+  <app-page-header title="Ajustes" subtitle="Ajusta lo mínimo. Lo importante pasa fuera de la app."></app-page-header>
+
+  <section class="panel panel-primary">
+    <h2>Zona horaria</h2>
+    <p class="note">Solo afecta programas nuevos. No cambia el actual.</p>
+    <form [formGroup]="timezoneForm" (ngSubmit)="saveTimezone()" class="form-grid">
+      <app-error-message [message]="timezoneError()"></app-error-message>
+      <label>
+        Zona horaria
+        <input type="text" formControlName="timezone" [value]="humanTimezone()" readonly class="input-readonly" />
+      </label>
+      <button
+        type="submit"
+        class="settings-button"
+        [disabled]="loadingTimezone() || timezoneForm.pristine || timezoneForm.invalid"
+      >
+        {{ loadingTimezone() ? 'Guardando...' : 'Guardar zona horaria' }}
+      </button>
+      <p class="success-message" *ngIf="timezoneSaved() && !timezoneError()">Cambios guardados</p>
+    </form>
+  </section>
+
+  <section class="panel">
+    <h2>Recordatorios</h2>
+    <p class="note">Te avisará a esta hora para completar tu misión del día.</p>
+    <p class="note">Más adelante podrás recibir avisos cuando se active un nuevo impulso.</p>
+    <form [formGroup]="reminderForm" (ngSubmit)="saveReminders()" class="form-grid">
+      <app-error-message [message]="reminderError()"></app-error-message>
+      <label class="toggle">
+        <input type="checkbox" formControlName="reminderEnabled" />
+        Quiero un recordatorio diario
+      </label>
+      <label [class.is-disabled]="!reminderForm.get('reminderEnabled')?.value">
+        Hora
+        <input type="time" formControlName="reminderTime" [disabled]="!reminderForm.get('reminderEnabled')?.value" />
+        <span class="helper-text">Formato 24h</span>
+      </label>
+      <button
+        type="submit"
+        class="settings-button"
+        [disabled]="loadingReminders() || reminderForm.pristine"
+      >
+        {{ loadingReminders() ? 'Guardando...' : 'Guardar horario' }}
+      </button>
+      <p class="success-message" *ngIf="reminderSaved() && !reminderError()">Cambios guardados</p>
+    </form>
+  </section>
+
+  <section class="panel">
+    <h2>Sonido de acciones</h2>
+    <p class="note">Confirma taps, XP local y bloqueos de impulso. Solo en este dispositivo.</p>
+    <form [formGroup]="soundForm" (ngSubmit)="saveSoundSettings()" class="form-grid">
+      <label class="toggle">
+        <input type="checkbox" formControlName="actionSoundEnabled" />
+        Sonido de acciones
+      </label>
+      <button
+        type="submit"
+        class="settings-button"
+        [disabled]="soundForm.pristine"
+      >
+        Guardar sonido
+      </button>
+      <p class="success-message" *ngIf="soundSaved()">Cambios guardados</p>
+    </form>
+  </section>
+
+  <section class="panel">
+    <h2>Sugerencias</h2>
+    <p class="note">Cuéntanos qué mejorarías, qué falta o qué se siente raro.</p>
+    <button type="button" class="settings-button" (click)="openSuggestions()">
+      Enviar sugerencia
+    </button>
+  </section>
+</app-page-shell>

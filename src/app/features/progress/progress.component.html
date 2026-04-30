@@ -1,0 +1,36 @@
+<app-page-shell>
+  <app-error-message [message]="errorMessage()"></app-error-message>
+  <app-loading-state *ngIf="loading()"></app-loading-state>
+
+  <app-empty-state
+    *ngIf="!loading() && noActiveProgram()"
+    title="No tienes un programa activo."
+    description="Elige un programa para continuar."
+    actionLabel="Elegir programa"
+    (action)="router.navigate(['/programs'])"
+  ></app-empty-state>
+
+  <main *ngIf="!loading() && summary() as data" class="progress-screen">
+    <section class="hero-progress">
+      <p>Así vas</p>
+      <span>Día {{ data.progressPercent === 100 ? data.totalDays : data.completedDaysCount + data.failedDaysCount }} de {{ data.totalDays }}</span>
+      <app-progress-bar [value]="data.progressPercent" label=""></app-progress-bar>
+      <small>El avance mide constancia, no perfección.</small>
+    </section>
+
+    <section class="streak-focus">
+      <h1>{{ data.currentStreak }} días seguidos</h1>
+      <p>Mantén el ritmo.</p>
+    </section>
+
+    <p class="inline-stats">
+      Nivel {{ data.level }} · XP {{ data.totalXP }} · {{ data.completedDaysCount }} acciones
+    </p>
+
+    <p class="reinforcement">Cada acción refuerza tu control sobre el impulso.</p>
+
+    <button type="button" class="progress-cta" (click)="router.navigate(['/dashboard'])">
+      Volver al día actual
+    </button>
+  </main>
+</app-page-shell>

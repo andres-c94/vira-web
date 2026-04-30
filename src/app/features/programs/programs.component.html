@@ -1,0 +1,72 @@
+<app-page-shell [compact]="true">
+  <header class="programs-header">
+    <h1>Programas</h1>
+    <p>Sistemas diseñados para cambiar cómo actúas, no solo cómo piensas.</p>
+  </header>
+
+  <app-error-message [message]="errorMessage()"></app-error-message>
+  <app-loading-state *ngIf="loading()"></app-loading-state>
+
+  <main *ngIf="!loading()" class="programs-screen">
+    <section *ngIf="primaryProgram() as program" class="featured-program" (click)="enterProgram(program)" tabindex="0">
+      <p class="level-label">Nivel actual</p>
+      <h2>{{ program.title }}</h2>
+      <div class="level-meta">
+        <span>{{ program.totalDays }} días</span>
+        <span *ngIf="isFreeProgramActive(program)">Activo</span>
+        <span *ngIf="!isFreeProgramActive(program)">Disponible</span>
+      </div>
+      <p class="level-purpose">{{ trainingFor(program) }}</p>
+      <div class="featured-program__actions">
+        <button
+          *ngIf="canStart(program)"
+          type="button"
+          class="featured-program__button featured-program__button--primary"
+          [disabled]="startLoading() === program.id"
+          (click)="$event.stopPropagation(); startProgram(program.id)"
+        >
+          {{ startLoading() === program.id ? 'Activando...' : 'Activar programa' }}
+        </button>
+
+        <button
+          *ngIf="isFreeProgramActive(program)"
+          type="button"
+          class="featured-program__button featured-program__button--secondary"
+          (click)="$event.stopPropagation(); goToDashboard()"
+        >
+          Ir al día actual
+        </button>
+
+        <button
+          *ngIf="isFreeProgramCompleted(program)"
+          type="button"
+          class="featured-program__button featured-program__button--primary"
+          [disabled]="startLoading() === program.id"
+          (click)="$event.stopPropagation(); startProgram(program.id)"
+        >
+          {{ startLoading() === program.id ? 'Reiniciando...' : 'Reiniciar programa' }}
+        </button>
+      </div>
+    </section>
+
+    <section class="level-stack" *ngIf="lockedPrograms().length">
+      <section class="level-row level-row--locked" *ngFor="let program of lockedPrograms()">
+        <span>
+          <strong>{{ program.title }}</strong>
+          <small>{{ program.totalDays }} días</small>
+          <small>{{ trainingFor(program) }}</small>
+          <small>{{ whyFor(program) }}</small>
+        </span>
+        <div class="level-action">
+          <em>Próximamente</em>
+          <button type="button" [disabled]="interestLoading() === program.id" (click)="registerInterest(program.id)">
+            {{ interestLoading() === program.id ? 'Enviando...' : 'Estoy interesado' }}
+          </button>
+        </div>
+        <p class="interest-feedback" *ngIf="feedbackByProgramId()[program.id]">
+          {{ feedbackByProgramId()[program.id] }}
+        </p>
+      </section>
+    </section>
+  </main>
+</app-page-shell>

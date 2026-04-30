@@ -1,0 +1,58 @@
+<app-page-shell [compact]="true">
+  <app-page-header title="Misión" subtitle="Solo cuenta si la haces hoy."></app-page-header>
+  <app-error-message [message]="errorMessage()"></app-error-message>
+  <app-loading-state *ngIf="loading()"></app-loading-state>
+
+  <ng-container *ngIf="!loading() && dashboard() as data">
+    <app-empty-state
+      *ngIf="!data.program"
+      title="No tienes un programa activo."
+      description="Elige un programa para empezar."
+      actionLabel="Elegir programa"
+      (action)="router.navigate(['/programs'])"
+    ></app-empty-state>
+
+    <section *ngIf="data.program && data.programStatus === 'ACTIVE' && data.mission && data.missionExecutionStatus === 'PENDING'" class="panel">
+      <p class="eyebrow">Día {{ data.programDay }}</p>
+      <h2>{{ data.mission.title }}</h2>
+      <p>{{ data.mission.description }}</p>
+      <div class="meta">
+        <span>Dificultad {{ difficultyLabel(data.mission.structuralDifficulty) }}</span>
+        <span>{{ data.mission.xpReward }} XP</span>
+      </div>
+      <ul>
+        <li>Solo cuenta si se hace hoy.</li>
+        <li>No se puede editar después.</li>
+      </ul>
+      <section class="why-panel">
+        <p class="why-title">Por qué esta misión</p>
+        <p><strong>Por qué funciona:</strong> {{ missionWhy(data.mission.dayNumber).why }}</p>
+        <p><strong>Beneficio:</strong> {{ missionWhy(data.mission.dayNumber).benefit }}</p>
+      </section>
+      <div class="actions">
+        <app-button (click)="router.navigate(['/mission/complete'])">Completar misión</app-button>
+        <app-button variant="danger" (click)="router.navigate(['/mission/fail'])">No la hice</app-button>
+      </div>
+    </section>
+
+    <section *ngIf="data.program && data.programStatus === 'ACTIVE' && data.missionExecutionStatus === 'COMPLETED'" class="panel">
+      <h2>Acción registrada. Vuelve mañana.</h2>
+      <p>{{ data.mission?.title }}</p>
+      <app-button variant="secondary" (click)="router.navigate(['/dashboard'])">Volver al dashboard</app-button>
+    </section>
+
+    <section *ngIf="data.program && data.programStatus === 'ACTIVE' && data.missionExecutionStatus === 'FAILED'" class="panel">
+      <h2>Día cerrado. Continúa mañana.</h2>
+      <p>{{ data.mission?.title }}</p>
+      <p *ngIf="data.missionExecution?.failureReason" class="muted">
+        {{ failureReasonLabel(data.missionExecution!.failureReason!) }}
+      </p>
+      <app-button variant="secondary" (click)="router.navigate(['/dashboard'])">Volver al dashboard</app-button>
+    </section>
+
+    <section *ngIf="data.programStatus === 'COMPLETED'" class="panel">
+      <h2>Programa finalizado.</h2>
+      <app-button variant="secondary" (click)="router.navigate(['/dashboard'])">Ver resumen</app-button>
+    </section>
+  </ng-container>
+</app-page-shell>

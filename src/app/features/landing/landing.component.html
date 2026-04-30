@@ -1,0 +1,127 @@
+<app-page-shell [immersive]="true">
+  <section class="hero-wrapper">
+    <section class="hero-layout">
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-brand">
+          <app-logo size="lg"></app-logo>
+          <span class="brand__name">VIRA</span>
+        </div>
+        <p class="eyebrow">Reset Dopamina 14 días</p>
+        <h1 class="hero-title">Deja el scroll. Haz algo real hoy.</h1>
+        <p class="lead hero-subtext">
+          Una misión diaria para romper el consumo de contenido corto y recuperar tu foco en 14 días.
+        </p>
+
+        <div class="mission-example">
+          <p class="mission-label">Ejemplo de misión</p>
+          <p class="mission-copy">Día 1: Camina 15 minutos sin mirar el celular.</p>
+          <p class="mission-note">Así de simple.</p>
+        </div>
+
+        <p class="differentiator">
+          No es otra app para sentirte mejor.<br />
+          Es para hacer algo hoy.
+        </p>
+
+        <div class="hero-actions">
+          <button type="button" class="hero-link" (click)="openAuth('register')">
+            <app-button>Comenzar día 1</app-button>
+          </button>
+          <button type="button" class="hero-link" (click)="openAuth('login')">
+            <app-button variant="ghost">Iniciar sesión</app-button>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero-side">
+      <article class="auth-panel" #authPanel>
+        <div class="auth-tabs">
+          <button type="button" [class.active]="authMode() === 'register'" (click)="switchMode('register')">Crear cuenta</button>
+          <button type="button" [class.active]="authMode() === 'login'" (click)="switchMode('login')">Ingresar</button>
+        </div>
+
+        <app-error-message [message]="errorMessage()"></app-error-message>
+
+        <form *ngIf="authMode() === 'register'" class="auth-form" [formGroup]="registerForm" (ngSubmit)="submitRegister()">
+          <div>
+            <p class="panel-kicker">Comenzar ahora</p>
+            <h2>Crea tu cuenta</h2>
+          </div>
+
+          <label>
+            Email
+            <input type="email" formControlName="email" />
+          </label>
+
+          <label>
+            Password
+            <input type="password" formControlName="password" />
+          </label>
+
+          <p class="helper">Zona horaria detectada: Bogotá</p>
+
+          <app-button type="submit" [loading]="loading()">Empezar ahora</app-button>
+          <p class="micro-copy">Te tomará menos de 30 segundos empezar.</p>
+        </form>
+
+        <form *ngIf="authMode() === 'login'" class="auth-form" [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+          <div>
+            <p class="panel-kicker">Volver al programa</p>
+            <h2>Iniciar sesión</h2>
+          </div>
+
+          <label>
+            Email
+            <input type="email" formControlName="email" />
+          </label>
+
+          <label>
+            Password
+            <input type="password" formControlName="password" />
+          </label>
+
+          <app-button type="submit" [loading]="loading()">Entrar</app-button>
+        </form>
+      </article>
+    </section>
+  </section>
+  </section>
+
+  <section class="support-sections">
+    <section class="info-grid">
+      <article class="panel">
+        <p class="panel-kicker">Cómo funciona</p>
+        <ol>
+          <li>Recibe una misión diaria clara</li>
+          <li>Hazla fuera de la pantalla</li>
+          <li>Marca lo que hiciste</li>
+        </ol>
+      </article>
+    </section>
+
+    <section class="why-section">
+      <p class="panel-kicker">Por qué funciona</p>
+      <p class="why-copy">
+        El contenido corto entrena tu cerebro a buscar recompensas inmediatas. VIRA hace lo contrario:
+        reduce estímulos, entrena foco y te empuja a ejecutar acciones reales.
+      </p>
+
+      <div class="why-grid">
+        <article class="why-card">
+          <h3>Menos impulso</h3>
+          <p>Cortas el hábito automático de revisar pantalla.</p>
+        </article>
+        <article class="why-card">
+          <h3>Más foco</h3>
+          <p>Entrenas atención sostenida con acciones simples.</p>
+        </article>
+        <article class="why-card">
+          <h3>Acción real</h3>
+          <p>Pasas de consumir contenido a ejecutar algo concreto.</p>
+        </article>
+      </div>
+    </section>
+  </section>
+</app-page-shell>

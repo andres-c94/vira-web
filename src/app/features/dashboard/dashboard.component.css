@@ -1,0 +1,154 @@
+.main-screen {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  padding: 0.6rem 0 1rem;
+}
+
+.screen-header {
+  display: block;
+  color: rgba(249, 250, 251, 0.62);
+  font-size: 0.88rem;
+  padding-top: 0.1rem;
+}
+
+.screen-header span,
+.status-line,
+.reward-line,
+.progress-inline p,
+.progress-note,
+.anticipation-block p,
+.anticipation-block span {
+  margin: 0;
+}
+
+.mission-block {
+  display: grid;
+  gap: 0.75rem;
+  padding-top: 2.1rem;
+}
+
+.mission-block h1 {
+  margin: 0;
+  max-width: 100%;
+  font-size: clamp(2.75rem, 13vw, 3.45rem);
+  font-weight: 800;
+  line-height: 0.94;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.status-line {
+  color: rgba(156, 163, 175, 0.82);
+  font-size: 0.95rem;
+}
+
+.status-line--success {
+  color: var(--success);
+  animation: fadeScaleIn 160ms ease-out 1;
+}
+
+.status-line--closed {
+  color: rgba(239, 68, 68, 0.82);
+}
+
+.reward-line {
+  justify-self: start;
+  min-height: 34px;
+  padding: 0.38rem 0.72rem;
+  border-radius: 999px;
+  color: #d7f6df;
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.progress-inline {
+  display: grid;
+  gap: 0.65rem;
+  color: rgba(156, 163, 175, 0.78);
+  font-size: 0.86rem;
+}
+
+.progress-note {
+  color: rgba(249, 250, 251, 0.56);
+  font-size: 0.8rem;
+}
+
+.anticipation-block {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.25rem 0 0.4rem;
+  color: rgba(156, 163, 175, 0.72);
+}
+
+.anticipation-block p {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+.anticipation-block h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.05;
+  filter: blur(4px);
+  opacity: 0.82;
+  user-select: none;
+}
+
+.anticipation-block span {
+  font-size: 0.88rem;
+}
+
+.bottom-cta {
+  position: sticky;
+  bottom: 0;
+  display: grid;
+  padding: 0.9rem 0 1rem;
+  margin-top: 0.2rem;
+  background: linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.9) 34%, rgba(15, 23, 42, 1) 100%);
+}
+
+.suggestion-link {
+  justify-self: start;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(156, 163, 175, 0.82);
+  font: inherit;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .main-screen {
+    max-width: 760px;
+    min-height: 100svh;
+    margin: 0 auto;
+    gap: 2rem;
+  }
+
+  .mission-block h1 {
+    max-width: 12ch;
+    font-size: 4.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .bottom-cta {
+    bottom: calc(4.85rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.88) 30%, rgba(15, 23, 42, 0.98) 100%);
+  }
+}
+
+@keyframes fadeScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

@@ -1,0 +1,61 @@
+<app-page-shell [compact]="true">
+  <app-page-header title="Completar misión" subtitle="Marca la acción y sal de la app."></app-page-header>
+
+  <form class="form-card" *ngIf="completionPhase() === 'form'; else completionSequence" [formGroup]="form" (ngSubmit)="submit()">
+    <app-error-message [message]="errorMessage()"></app-error-message>
+
+    <p class="form-intro">Solo registra cómo se sintió y cómo quedaste hoy.</p>
+
+    <label class="form-field">
+      Dificultad percibida
+      <select formControlName="difficultyRating">
+        <option [value]="1">1 · Muy fácil</option>
+        <option [value]="2">2</option>
+        <option [value]="3">3 · Normal</option>
+        <option [value]="4">4</option>
+        <option [value]="5">5 · Difícil</option>
+      </select>
+    </label>
+
+    <label class="form-field">
+      Estado de ánimo
+      <select formControlName="mood">
+        <option value="">Sin registrar</option>
+        <option value="BAD">Bajo</option>
+        <option value="NORMAL">Normal</option>
+        <option value="GOOD">Bien</option>
+      </select>
+    </label>
+
+    <app-button type="submit" [loading]="loading()">Registrar acción</app-button>
+  </form>
+
+  <ng-template #completionSequence>
+    <section class="completion-sequence" *ngIf="completionSnapshot() as snapshot">
+      <div class="completion-sequence__status" *ngIf="completionPhase() === 'status' || completionPhase() === 'xp' || completionPhase() === 'progress' || completionPhase() === 'streak'" @statusReveal (@statusReveal.done)="onStatusShown()">
+        <span>✓</span>
+        <h2>Esto ya cuenta</h2>
+      </div>
+
+      <p class="completion-sequence__xp" *ngIf="(completionPhase() === 'xp' || completionPhase() === 'progress' || completionPhase() === 'streak') && snapshot.mission?.xpReward" @xpReveal (@xpReveal.done)="onXpShown()">
+        +{{ snapshot.mission?.xpReward }} XP
+      </p>
+
+      <section
+        class="completion-sequence__progress"
+        *ngIf="completionPhase() === 'progress' || completionPhase() === 'streak'"
+        @progressReveal
+        (@progressReveal.done)="onProgressShown()"
+      >
+        <p>Sigues en control</p>
+        <div class="completion-sequence__track">
+          <span [class.is-active]="completionPhase() === 'progress' || completionPhase() === 'streak'" [style.width.%]="completionPhase() === 'progress' || completionPhase() === 'streak' ? snapshot.progressPercent ?? 0 : 0"></span>
+        </div>
+      </section>
+
+      <p class="completion-sequence__streak" *ngIf="completionPhase() === 'streak'" @streakReveal (@streakReveal.done)="onStreakShown()">
+        {{ (snapshot.currentStreak ?? 0) > 0 ? 'Vas en racha' : 'Empieza hoy' }}
+      </p>
+    </section>
+  </ng-template>
+</app-page-shell>

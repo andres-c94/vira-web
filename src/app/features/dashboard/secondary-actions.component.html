@@ -1,0 +1,91 @@
+<section class="secondary-actions" [class.secondary-actions--complete]="mode() === 'day-complete'">
+  <div class="secondary-actions__header">
+    <p>Modo impulso</p>
+    <h3>Acciones rapidas por bloques.</h3>
+  </div>
+
+  <div class="secondary-actions__topline">
+    <span class="secondary-actions__status-pill" [@counterPulse]="blockXp() + todayXp()">
+      {{ statusPill() }}
+    </span>
+    <span class="secondary-actions__range" *ngIf="currentBlock() as block">{{ block.rangeLabel }}</span>
+    <span class="secondary-actions__range" *ngIf="!currentBlock() && nextBlock() as block">
+      Sigue: {{ block.label }} · {{ block.rangeLabel }}
+    </span>
+  </div>
+
+  <div class="secondary-actions__status" [class.is-countdown]="mode() !== 'active'">
+    <p>{{ countdownLabel() }}</p>
+    <span *ngIf="mode() === 'active'">Hoy: +{{ todayXp() }}/48 XP</span>
+  </div>
+
+  <div
+    *ngIf="canShowTasks()"
+    class="secondary-actions__chips-wrap"
+    [class.is-cooldown]="cooldownActive()"
+    [class.is-locked]="mode() !== 'active'"
+    [@cooldownNudge]="cooldownNudgeTick()"
+  >
+    <div *ngIf="cooldownActive() && mode() === 'active'" class="secondary-actions__cooldown-state">
+      <span>Espera un momento</span>
+    </div>
+
+    <button
+      *ngIf="cooldownActive() && mode() === 'active'"
+      type="button"
+      class="secondary-actions__cooldown-overlay"
+      (click)="onCooldownBlocked()"
+      aria-label="Espera un momento"
+    ></button>
+
+    <div
+      class="secondary-actions__chips"
+      [class.is-locked]="mode() !== 'active'"
+      [class.is-cooldown]="cooldownActive()"
+      [@chipList]="tasks().length"
+    >
+      <button
+        *ngFor="let task of tasks(); trackBy: trackByTaskId; let index = index"
+        type="button"
+        class="secondary-chip"
+        [ngClass]="bubbleVariant(task, index)"
+        [class.is-completing]="task.state === 'completing'"
+        [class.is-done]="task.state === 'completed'"
+        [class.is-disabled]="task.disabled || mode() !== 'active'"
+        [@chipState]="task.state"
+        (@chipState.done)="onChipAnimationDone($event, task)"
+        (click)="onClick($event, task)"
+        [disabled]="task.disabled || mode() !== 'active'"
+        [attr.aria-disabled]="task.disabled || mode() !== 'active'"
+      >
+        <span class="secondary-chip__spark" aria-hidden="true"></span>
+        <span class="secondary-chip__text">{{ task.text }}</span>
+        <span class="secondary-chip__meta" *ngIf="task.state !== 'completed' && task.xpPreview">+{{ task.xpPreview }} XP</span>
+        <span class="secondary-chip__meta secondary-chip__meta--done" *ngIf="task.state === 'completed'">
+          hecho
+        </span>
+        <span
+          class="secondary-chip__xp-pop"
+          *ngIf="task.state === 'completed' && task.xpAwarded"
+          [@xpPop]="task.state"
+          (@xpPop.start)="onXpPopStart()"
+        >
+          +{{ task.xpAwarded }} XP
+        </span>
+      </button>
+    </div>
+
+    <p
+      *ngIf="blockedFeedbackVisible()"
+      class="secondary-actions__blocked-cue"
+      [@blockedCue]="blockedFeedbackTick()"
+      (@blockedCue.done)="onBlockedFeedbackDone()"
+    >
+      {{ transientCueText() }}
+    </p>
+  </div>
+
+  <p class="secondary-actions__count" *ngIf="mode() !== 'locked' && mode() !== 'day-complete'">
+    {{ completedCount() }}/5 acciones del bloque
+  </p>
+</section>
